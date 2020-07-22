@@ -32,7 +32,7 @@ _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS = ['fault', 'numa_topology',
 INSTANCE_OPTIONAL_ATTRS = (_INSTANCE_OPTIONAL_JOINED_FIELDS +
                            _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS)
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()
@@ -55,7 +55,7 @@ def _manual_join_columns(columns_to_join):
 
 def instance_get_all_by_filters(context, filters, sort_key, sort_dir,
                                 limit=None, marker=None, columns_to_join=None,
-                                use_slave=False):
+                                use_subordinate=False):
     """Return instances that match all filters.  Deleted instances
     will be returned by default, unless there's a filter that says
     otherwise.
@@ -89,10 +89,10 @@ def instance_get_all_by_filters(context, filters, sort_key, sort_dir,
 
     sort_fn = {'desc': desc, 'asc': asc}
 
-    # if CONF.database.slave_connection == '':
-    #     use_slave = False
+    # if CONF.database.subordinate_connection == '':
+    #     use_subordinate = False
 
-    session = get_session(use_slave=use_slave)
+    session = get_session(use_subordinate=use_subordinate)
 
     if columns_to_join is None:
         columns_to_join = ['info_cache', 'security_groups']

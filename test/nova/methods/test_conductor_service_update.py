@@ -27,7 +27,7 @@ _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS = ['fault', 'numa_topology',
 INSTANCE_OPTIONAL_ATTRS = (_INSTANCE_OPTIONAL_JOINED_FIELDS +
                            _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS)
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()
@@ -39,9 +39,9 @@ def model_query(context, *args, **kwargs):
     return RomeQuery(*args, **kwargs)
 
 def _service_get(context, service_id, with_compute_node=True, session=None,
-                 use_slave=False):
+                 use_subordinate=False):
     query = model_query(context, models.Service, session=session,
-                        use_slave=use_slave).\
+                        use_subordinate=use_subordinate).\
                      filter_by(id=service_id)
 
     # if with_compute_node:

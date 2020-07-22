@@ -32,7 +32,7 @@ _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS = ['fault', 'numa_topology',
 INSTANCE_OPTIONAL_ATTRS = (_INSTANCE_OPTIONAL_JOINED_FIELDS +
                            _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS)
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()
@@ -44,12 +44,12 @@ def model_query(context, *args, **kwargs):
     return RomeQuery(*args, **kwargs)
 
 def _block_device_mapping_get_query(context, session=None,
-        columns_to_join=None, use_slave=False):
+        columns_to_join=None, use_subordinate=False):
     if columns_to_join is None:
         columns_to_join = []
 
     query = model_query(context, models.BlockDeviceMapping,
-                        session=session, use_slave=use_slave)
+                        session=session, use_subordinate=use_subordinate)
 
     for column in columns_to_join:
         query = query.options(joinedload(column))
@@ -58,8 +58,8 @@ def _block_device_mapping_get_query(context, session=None,
 
 
 def block_device_mapping_get_all_by_instance(context, instance_uuid,
-                                             use_slave=False):
-    return _block_device_mapping_get_query(context, use_slave=use_slave).\
+                                             use_subordinate=False):
+    return _block_device_mapping_get_query(context, use_subordinate=use_subordinate).\
                  filter_by(instance_uuid=instance_uuid).\
                  all()
 

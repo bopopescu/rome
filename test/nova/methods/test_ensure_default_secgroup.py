@@ -8,7 +8,7 @@ from lib.rome.core.session.session import Session as RomeSession
 
 import logging
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()

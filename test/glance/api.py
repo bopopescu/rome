@@ -110,7 +110,7 @@ def get_engine():
 #    return facade.get_session(autocommit=autocommit,
 #                              expire_on_commit=expire_on_commit)
 
-def get_session(use_slave = False, **kwargs):
+def get_session(use_subordinate = False, **kwargs):
     return RomeSession()
 
 def clear_db_env():

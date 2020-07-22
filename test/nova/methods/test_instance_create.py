@@ -28,7 +28,7 @@ INSTANCE_OPTIONAL_ATTRS = (_INSTANCE_OPTIONAL_JOINED_FIELDS +
                            _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS)
 
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()

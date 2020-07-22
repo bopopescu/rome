@@ -47,7 +47,7 @@ class MemoizationDecorator(object):
                     should_retry = False
                 item["modification_lock"].release()
                 if should_retry:
-                    # memory has been destroyed by a master call, simply abort it and repeat the method.
+                    # memory has been destroyed by a main call, simply abort it and repeat the method.
                     return self.__call__(*args, **kwargs)
                 # Wait for the expected value.
                 result = item["result_queue"].get()
@@ -67,7 +67,7 @@ class MemoizationDecorator(object):
                 self.insertion_lock.release()
 
                 if should_retry:
-                    # memory has been initialised by a quicker concurrent call, simply abort it and become a slave.
+                    # memory has been initialised by a quicker concurrent call, simply abort it and become a subordinate.
                     return self.__call__(*args, **kwargs)
 
                 # compute the expected value and store it in a shared memory.
@@ -85,11 +85,11 @@ class MemoizationDecorator(object):
                 # delete the memory item
                 item = self.memory[call_hash]
 
-                # send to concurrent slave calls.
+                # send to concurrent subordinate calls.
                 for i in range(item["waiting_threads_count"]):
                     item["result_queue"].put(result)
 
-                # Once there are no more slave calls, the item can be destroyed
+                # Once there are no more subordinate calls, the item can be destroyed
                 item["modification_lock"].acquire()
                 self.insertion_lock.acquire()
                 del self.memory[call_hash]

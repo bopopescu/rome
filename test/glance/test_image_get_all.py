@@ -34,7 +34,7 @@ def _drop_protected_attrs(model_class, values):
         if attr in values:
             del values[attr]
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()

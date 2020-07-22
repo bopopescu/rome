@@ -36,7 +36,7 @@ _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS = ['fault', 'numa_topology',
 INSTANCE_OPTIONAL_ATTRS = (_INSTANCE_OPTIONAL_JOINED_FIELDS +
                            _INSTANCE_OPTIONAL_NON_COLUMN_FIELDS)
 
-def get_session(use_slave=False, **kwargs):
+def get_session(use_subordinate=False, **kwargs):
     # return FakeSession()
     return RomeSession()
     # return OldRomeSession()
@@ -53,14 +53,14 @@ def _network_get_query(context, session=None):
                        read_deleted="no")
 
 def _instance_get_all_query(context, project_only=False,
-                            joins=None, use_slave=False):
+                            joins=None, use_subordinate=False):
     if joins is None:
         joins = ['info_cache', 'security_groups']
 
     query = model_query(context,
                         models.Instance,
                         project_only=project_only,
-                        use_slave=use_slave)
+                        use_subordinate=use_subordinate)
     # for join in joins:
     #     query = query.options(joinedload(join))
     return query
@@ -71,7 +71,7 @@ def _instance_pcidevs_get_multi(context, instance_uuids, session=None):
         filter(models.PciDevice.instance_uuid.in_(instance_uuids))
 
 def _instances_fill_metadata(context, instances,
-                             manual_joins=None, use_slave=False):
+                             manual_joins=None, use_subordinate=False):
     """Selectively fill instances with manually-joined metadata. Note that
     instance will be converted to a dict.
     :param context: security context
@@ -128,9 +128,9 @@ def _manual_join_columns(columns_to_join):
 
 def instance_get_active_by_window_joined(context, begin, end=None,
                                          project_id=None, host=None,
-                                         use_slave=False):
+                                         use_subordinate=False):
     """Return instances and joins that were active during window."""
-    session = get_session(use_slave=use_slave)
+    session = get_session(use_subordinate=use_subordinate)
     query = session.query(models.Instance)
 
     query = query.options(joinedload('info_cache')).\

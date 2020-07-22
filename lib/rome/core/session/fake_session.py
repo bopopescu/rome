@@ -27,8 +27,8 @@ class FakeSession():
 
 
 #
-# def get_session(use_slave=False, **kwargs):
-#     # facade = _create_facade_lazily(use_slave)
+# def get_session(use_subordinate=False, **kwargs):
+#     # facade = _create_facade_lazily(use_subordinate)
 #     # return facade.get_session(**kwargs)
 #
 #     return FakeSession()
